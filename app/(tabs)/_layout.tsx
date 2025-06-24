@@ -10,7 +10,19 @@ export default function TabLayouts() {
                 tabBarShowLabel: false,
                 headerShown: false,
                 tabBarActiveTintColor: COLORS.primary,
-                tabBarInactiveTintColor: COLORS.surfaceLight
+                tabBarInactiveTintColor: COLORS.white,
+                tabBarStyle: {
+                    backgroundColor: COLORS.surface, // Or use a dark shade
+                    borderTopWidth: 0,                  // Remove border if needed
+                    height: 60,                         // Make it taller
+                    paddingBottom: 10,                  // Extra space for icons
+                    paddingTop: 10,
+                    elevation: 10,                      // Shadow on Android
+                    shadowColor: COLORS.grey,
+                    shadowOpacity: 0.1,
+                    shadowOffset: { width: 0, height: -3 },
+                    shadowRadius: 10,
+                },
             }}
         >
             <Tabs.Screen
