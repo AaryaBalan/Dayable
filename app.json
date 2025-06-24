@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Instagram",
-    "slug": "Instagram",
+    "name": "Dayable",
+    "slug": "Dayable",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "instagram",
+    "scheme": "Dayable",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
