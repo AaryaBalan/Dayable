@@ -3,7 +3,8 @@ import { useSSO } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import React from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, TouchableOpacity, View } from 'react-native'
+import Text from '../../components/GlobalText'
 
 export default function Login() {
 
@@ -36,7 +37,7 @@ export default function Login() {
                 <Image
                     source={require('../../assets/images/dayable.png')}
                     style={styles.image}
-                    resizeMode='cover'
+                    resizeMode='contain'
                 />
             </View>
 

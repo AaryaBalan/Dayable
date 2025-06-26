@@ -8,10 +8,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: 'center',
-        rowGap: -1
+        rowGap: -1,
+        backgroundColor: COLORS.background
     },
     image: {
-        width: width * .85,
+        width: width,
         height: height * 0.6
     },
     textContainer: {
@@ -22,7 +23,8 @@ export const styles = StyleSheet.create({
     },
     mainText: {
         fontSize: 40,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: COLORS.primary
     },
     descriptionText: {
         fontSize: 15,

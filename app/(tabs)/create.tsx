@@ -9,7 +9,8 @@ import { Image } from 'expo-image'
 import * as ImagePicker from "expo-image-picker"
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
-import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, View } from 'react-native'
+import Text from '../../components/GlobalText'
 
 export default function Create() {
 
@@ -32,8 +33,8 @@ export default function Create() {
     }
 
     // functions from the database
-    const generateUploadUrl = useMutation(api.create.generateUploadUrl)
-    const createPost = useMutation(api.create.createPost)
+    const generateUploadUrl = useMutation(api.post.generateUploadUrl)
+    const createPost = useMutation(api.post.createPost)
 
     const handleShare = async () => {
         // edge case
@@ -65,7 +66,7 @@ export default function Create() {
 
     if (!image) {
         return (
-            <View style={{ backgroundColor: COLORS.surface, flex: 1 }}>
+            <View style={{ backgroundColor: COLORS.background, flex: 1 }}>
                 {/* top bar */}
                 <View style={styles.topBar}>
                     <TouchableOpacity onPress={() => router.back()}>
@@ -74,9 +75,11 @@ export default function Create() {
                     <Text style={styles.topBarContent}>Create</Text>
                     <View style={{ width: 20 }}></View>
                 </View>
+
+                {/* add image screen */}
                 <TouchableOpacity style={styles.createImageContainer} onPress={pickImage}>
                     <Image style={styles.createImage} source={require('../../assets/images/create-1.png')} resizeMode='contain' />
-                    <Text style={{ fontSize: 15, marginTop: -100, color: COLORS.white }}>Tap to select an image</Text>
+                    <Text style={{ fontSize: 12, color: COLORS.white }}>Tap to select an image</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -112,6 +115,7 @@ export default function Create() {
                 </TouchableOpacity>
             </View>
 
+            {/* preview image area */}
             <ScrollView
                 bounces={false}
                 keyboardShouldPersistTaps='handled'
@@ -119,6 +123,7 @@ export default function Create() {
                 contentOffset={{ x: 0, y: 100 }}
             >
                 <View style={[styles.uploadedContent, isSharing && styles.uploadContentDisabled]}>
+                    {/* image section */}
                     <View style={styles.imageSection}>
                         <Image
                             source={image}
@@ -131,11 +136,10 @@ export default function Create() {
                             onPress={pickImage}
                             disabled={isSharing}
                         >
-                            <Ionicons name='image-outline' size={25} color={COLORS.white} />
-                            <Text style={{ color: COLORS.white }}>Change</Text>
+                            <Ionicons name='image-outline' size={20} color={COLORS.white} />
+                            <Text style={{ color: COLORS.white, fontSize: 12 }}>Change</Text>
                         </TouchableOpacity>
                     </View>
-                    {/* image section */}
 
                     {/* text area */}
                     <View style={styles.textContainer}>

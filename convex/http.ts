@@ -1,4 +1,4 @@
-// prevent api and http use by anyonw, only authenticated user can senc the request and save the data and handle it
+// prevent api and http use by anyonw, only authenticated user can send the request and save the data and handle it
 // svix is used to handle webhooks
 
 import { httpRouter } from "convex/server";

@@ -12,13 +12,13 @@ export default function TabLayouts() {
                 tabBarActiveTintColor: COLORS.primary,
                 tabBarInactiveTintColor: COLORS.white,
                 tabBarStyle: {
-                    backgroundColor: COLORS.surface, // Or use a dark shade
-                    borderTopWidth: 0,                  // Remove border if needed
-                    height: 60,                         // Make it taller
-                    paddingBottom: 10,                  // Extra space for icons
+                    backgroundColor: COLORS.background, 
+                    borderTopWidth: 0,                 
+                    height: 60,                         
+                    paddingBottom: 10,                  
                     paddingTop: 10,
-                    elevation: 10,                      // Shadow on Android
-                    shadowColor: COLORS.grey,
+                    elevation: 10,                      
+                    shadowColor: COLORS.white,
                     shadowOpacity: 0.1,
                     shadowOffset: { width: 0, height: -3 },
                     shadowRadius: 10,

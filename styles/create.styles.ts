@@ -5,21 +5,23 @@ const { width, height } = Dimensions.get('window')
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: COLORS.surface,
+        backgroundColor: COLORS.background,
         flex: 1
     },
     topBar: {
         width: width,
         height: 50,
         padding: 10,
-        backgroundColor: COLORS.surface,
+        backgroundColor: COLORS.background,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomColor: COLORS.surfaceLight,
+        borderBottomWidth: 1
     },
     topBarContent: {
         color: COLORS.white,
-        fontSize: 20,
+        fontSize: 15,
     },
     createImage: {
         width: width * .9,
@@ -40,12 +42,13 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 7,
         borderRadius: 5,
         width: 50,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 12
     },
     imageSection: {
         width: width,
         height: width,
-        backgroundColor: COLORS.surface,
+        backgroundColor: COLORS.background,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -85,8 +88,9 @@ export const styles = StyleSheet.create({
     textarea: {
         flex: 1,
         color: COLORS.white,
-        fontSize: 16,
-        minHeight: 'auto'
+        fontSize: 13,
+        minHeight: 'auto',
+        fontFamily: 'Poppins_400Regular'
     },
     scrollContent: {
         flexGrow: 1,
