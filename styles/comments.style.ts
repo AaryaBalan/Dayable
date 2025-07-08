@@ -40,12 +40,11 @@ export const styles = StyleSheet.create({
     commentUsername: {
         color: COLORS.white,
         fontWeight: "500",
-        marginBottom: 4,
         fontSize: 13
     },
     commentText: {
         color: COLORS.white,
-        fontSize: 13,
+        fontSize: 12,
         lineHeight: 20,
     },
     commentTime: {

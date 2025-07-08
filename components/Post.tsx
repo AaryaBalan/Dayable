@@ -1,18 +1,32 @@
 import { COLORS } from '@/constants/theme'
 import { api } from '@/convex/_generated/api'
 import { styles } from '@/styles/feed.styles'
+import { useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useMutation } from 'convex/react'
+import { formatDistanceToNow } from 'date-fns'
 import { Image } from 'expo-image'
 import { Link } from 'expo-router'
 import React, { useRef, useState } from 'react'
 import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import CommentsModal from './CommentsModal'
 import Text from './GlobalText'
-import {formatDistanceToNow} from 'date-fns'
+
 
 export default function Post({ post }) {
-    const lastTap = useRef(null)
+    const lastTap = useRef < number | null > (null)
+    const { user } = useUser()
+
+    // if user is not logged in change the url to login page
+    if (!user) {
+        return (
+            <Link href='/(auth)/login'>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ color: COLORS.white }}>Please login to view posts</Text>
+                </View>
+            </Link>
+        )
+    }
 
     const [isLiked, setIsLiked] = useState(post.isLiked)
     const [likesCount, setLikesCount] = useState(post.likes)
@@ -20,14 +34,18 @@ export default function Post({ post }) {
     //comments
     const [commentsCount, setCommentsCount] = useState(post.comments)
     const [showComment, setShowComment] = useState(false)
+    //bookmark
+    const [isBookmarked, setIdBookmarked] = useState(post.isBookmarked)
 
     const toggleLike = useMutation(api.post.toggleLike)
+    const toggleBookmark = useMutation(api.bookmarks.toggleBookmark)
+    const deletePost = useMutation(api.post.deletePost)
 
     const handleLike = async () => {
         try {
-            setIsLiked(prev => !prev)
             const newLike = await toggleLike({ postId: post._id })
-            setLikesCount(prev => (newLike ? prev + 1 : prev - 1))
+            setIsLiked(prev => !prev)
+            setLikesCount(prev => newLike ? prev + 1 : prev - 1)
         } catch (error) {
             console.log(error)
         }
@@ -45,6 +63,23 @@ export default function Post({ post }) {
             }
         } else {
             lastTap.current = now
+        }
+    }
+
+    const handleBookmark = async () => {
+        try {
+            setIdBookmarked(prev => !prev)
+            await toggleBookmark({ postId: post._id })
+        } catch (error) {
+            console.log('Error while toggling bookmark', error)
+        }
+    }
+
+    const handleDelete = async () => {
+        try{
+            await deletePost({post: post._id})
+        }catch (error){
+            console.log('Error while deleting post', error)
         }
     }
 
@@ -67,9 +102,15 @@ export default function Post({ post }) {
                     </TouchableOpacity>
                 </Link>
 
-                <TouchableOpacity>
-                    <Ionicons name='ellipsis-horizontal' size={20} color={COLORS.white} />
-                </TouchableOpacity>
+                {post.author.clerkId === user.id ?
+                    <TouchableOpacity onPress={handleDelete}>
+                        <Ionicons name='trash' size={20} color={COLORS.white} />
+                    </TouchableOpacity> :
+                    <TouchableOpacity>
+                        <Ionicons name='ellipsis-horizontal' size={20} color={COLORS.white} />
+                    </TouchableOpacity>
+                }
+
             </View>
 
             {/* image */}
@@ -107,8 +148,11 @@ export default function Post({ post }) {
                         <Ionicons name='chatbubble-outline' color={COLORS.white} size={22} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                    <Ionicons name='bookmark-outline' size={22} color={COLORS.white} />
+                <TouchableOpacity onPress={handleBookmark}>
+                    <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+                        color={isBookmarked ? COLORS.secondary : COLORS.white}
+                        size={22}
+                    />
                 </TouchableOpacity>
             </View>
 
@@ -123,12 +167,12 @@ export default function Post({ post }) {
                         <Text style={styles.captionText}>{post.caption}</Text>
                     </View>
                 )}
-                <TouchableOpacity>
-                    <Text style={styles.commentsText}>
-                        {post.comments > 0 ? `view all ${post.comments} comments` : 'Start the conversation'} 
-                    </Text>
-                </TouchableOpacity>
-                <Text style={styles.timeAgo}>{formatDistanceToNow(post._creationTime, {addSuffix: true})}</Text>
+                {post.comments > 0 &&
+                    <TouchableOpacity onPress={() => setShowComment(true)}>
+                        <Text style={styles.commentsText}>view all {post.comments} comments</Text>
+                    </TouchableOpacity>
+                }
+                <Text style={styles.timeAgo}>{formatDistanceToNow(post._creationTime, { addSuffix: true })}</Text>
             </View>
 
             {/* comments section */}

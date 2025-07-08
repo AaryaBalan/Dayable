@@ -1,5 +1,6 @@
 import { COLORS } from '@/constants/theme'
 import { api } from '@/convex/_generated/api'
+import { Id } from '@/convex/_generated/dataModel'
 import { styles } from '@/styles/comments.style'
 import { Ionicons } from '@expo/vector-icons'
 import { useMutation, useQuery } from 'convex/react'
@@ -9,23 +10,30 @@ import Comment from './Comment'
 import Text from './GlobalText'
 import Loader from './Loader'
 
+type CommentsModalProps = {
+    visible: boolean;
+    onClose: () => void;
+    onCommentAdded: () => void;
+    postId: string;
+};
+
 export default function CommentsModal({
     visible,
     onClose,
     onCommentAdded,
     postId,
-}) {
+}: CommentsModalProps) {
 
     const [comment, setComment] = useState('')
-    const comments = useQuery(api.comments.getComments, { postId })
+    const comments = useQuery(api.comments.getComments, { postId: postId as Id<"posts"> })
     const addComment = useMutation(api.comments.addComment)
 
     const handleAddComment = async () => {
-        if(!comment.trim()) return
+        if (!comment.trim()) return
         try {
             await addComment({
                 content: comment,
-                postId
+                postId: postId as Id<"posts">
             })
             setComment('')
             onCommentAdded()
@@ -58,7 +66,18 @@ export default function CommentsModal({
                     <Loader /> :
                     <FlatList
                         data={comments}
-                        renderItem={({ item }) => <Comment comment={item} />}
+                        renderItem={({ item }) => (
+                            <Comment
+                                comment={{
+                                    ...item,
+                                    user: {
+                                        image: item.user.image ?? '',
+                                        clerkId: item.user.clerkId ?? '',
+                                        username: item.user.username ?? '',
+                                    }
+                                }}
+                            />
+                        )}
                         keyExtractor={(item) => item._id}
                         contentContainerStyle={{ flex: 1, marginTop: 15 }}
                     />

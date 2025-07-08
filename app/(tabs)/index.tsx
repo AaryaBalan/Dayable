@@ -9,14 +9,21 @@ import { styles } from "@/styles/feed.styles";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
+import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import { FlatList, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const { signOut } = useAuth()
   const posts = useQuery(api.post.getAllFeed)
 
-  if (posts === undefined) return <Loader />
+  if (posts === undefined) return <Loader text={'Loading your feed...'}/>
   if (posts.length === 0) return <EmptyFeed />
+
+  const signoutUser = () => {
+    signOut()
+    router.replace('/(auth)/login')
+  }
 
   return (
     <View style={styles.feedContainer}>
@@ -25,7 +32,7 @@ export default function Index() {
         <Text style={styles.brand}>
           Dayable
         </Text>
-        <TouchableOpacity onPress={() => signOut()}>
+        <TouchableOpacity onPress={signoutUser}>
           <Ionicons name="log-out-outline" color={COLORS.white} size={25} />
         </TouchableOpacity>
       </View>
@@ -59,7 +66,13 @@ const EmptyFeed = () => {
     <View
       style={styles.emptyContainer}
     >
-      <Text style={{ color: COLORS.white }}>No Post yet</Text>
+      <Image
+        source={require('../../assets/images/no_post.png')}
+        style={styles.sadImage}
+        transition={200}
+        contentFit='cover'
+      />
+      <Text style={{ color: COLORS.grey, marginTop: -70 }}>No Post yet</Text>
     </View>
   )
 }

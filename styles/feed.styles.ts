@@ -13,7 +13,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.background,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    sadImage: {
+        width: width,
+        height: height * 0.5,
     },
     header: {
         flexDirection: "row",
@@ -91,7 +95,9 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 12
+        paddingHorizontal: 12,
+        paddingTop: 12,
+        paddingBottom: 5
     },
 
     // post info

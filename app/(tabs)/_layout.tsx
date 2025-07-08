@@ -47,7 +47,7 @@ export default function TabLayouts() {
                 options={{
                     tabBarIcon: ({ size, color }) => <Ionicons name="heart" size={size} color={color} />
                 }}
-                name='notification'
+                name='notifications'
             />
             <Tabs.Screen
                 options={{

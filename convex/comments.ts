@@ -60,6 +60,7 @@ export const getComments = query({
                     ...comment,
                     user: {
                         _id: user?._id,
+                        clerkId: user?.clerkId,
                         username: user?.username,
                         image: user?.image
                     }
