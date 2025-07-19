@@ -19,7 +19,7 @@ export default function Profile() {
         signOut()
         router.replace('/(auth)/login')
     }
-    console.log(currentUser)
+
     const [isEditModalVisible, setIsEditModalVisible] = useState(false)
     const [editDetails, setEditDetails] = useState({
         fullname: currentUser?.fullname || '',
@@ -36,8 +36,7 @@ export default function Profile() {
         setIsEditModalVisible(false)
     }
 
-    if (!currentUser || posts === undefined) return <Loader text='Loading your Profile :)' />
-
+    if (currentUser === undefined || posts === undefined || updateProfile === undefined) return <Loader text='Loading your Profile :)' />
 
     return (
         <View style={styles.container}>
@@ -85,10 +84,7 @@ export default function Profile() {
 
                     {/* action bar */}
                     <View style={styles.actionButtons}>
-                        <TouchableOpacity style={styles.editButton} onPress={() => {
-                            console.log('edit', editDetails)
-                            setIsEditModalVisible(true)
-                        }}>
+                        <TouchableOpacity style={styles.editButton} onPress={() => setIsEditModalVisible(true)}>
                             <Text style={styles.editButtonText}>Edit Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.shareButton}>
@@ -143,7 +139,7 @@ export default function Profile() {
                                 <Text style={styles.inputLabel}>Name</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={editDetails.fullname}
+                                    value={editDetails.fullname || currentUser.fullname}
                                     onChangeText={(text) => setEditDetails((prev) => ({ ...prev, fullname: text }))}
                                     placeholderTextColor={COLORS.grey}
                                     placeholder='Jhon Doe'
@@ -154,7 +150,7 @@ export default function Profile() {
                                 <Text style={styles.inputLabel}>Bio</Text>
                                 <TextInput
                                     style={[styles.input, styles.bioInput]}
-                                    value={editDetails.bio}
+                                    value={editDetails.bio || currentUser.bio}
                                     onChangeText={(text) => setEditDetails((prev) => ({ ...prev, bio: text }))}
                                     multiline
                                     numberOfLines={4}

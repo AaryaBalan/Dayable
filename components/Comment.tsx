@@ -10,7 +10,6 @@ import { Link } from 'expo-router'
 
 export default function Comment({ comment }) {
     const { user } = useUser()
-    console.log('user', comment)
     return (
         <View style={styles.commentContainer}>
             <Link href={comment.user.clerkId === user?.id ? '/(tabs)/profile' : `/user/${comment.userId}`} asChild>
