@@ -208,3 +208,60 @@ export const deletePost = mutation({
         return true
     }
 })
+
+// get post by user
+export const getPostsByUser = query({
+    args: {
+        userId: v.optional(v.id('users'))
+    },
+    handler: async (ctx, args) => {
+        const user = args.userId ? await ctx.db.get(args.userId) : await getAuthenticatedUser(ctx)
+        if (!user) throw new Error('User not found')
+
+        const posts = await ctx.db.query('posts')
+            .withIndex('by_user', (q) => q.eq('userId', args.userId || user._id))
+            .order('desc')
+            .collect()
+
+        if (posts.length === 0) return []
+        return posts
+    }
+})
+
+// get post by postId
+export const getPostById = query({
+    args: {
+        postId: v.id("posts")
+    },
+    handler: async (ctx, args) => {
+        const currentUser = await getAuthenticatedUser(ctx)
+        if (!currentUser) throw new Error("User is not verified")
+
+        const post = await ctx.db.get(args.postId)
+        if (!post) throw new Error("No post found")
+
+        // enchance the post info with userInfo, if the user is already liked or bookmarked
+        const author = await ctx.db.get(post.userId)
+        // check is the author already likes the post
+        const like = await ctx.db.query('likes')
+            .withIndex('by_user_and_post', (q) => q.eq('userId', currentUser._id).eq('postId', args.postId))
+            .first()
+        // check if the author already bookmarks the post
+        const bookmark = await ctx.db.query('bookmarks')
+            .withIndex('by_user_and_post', (q) => q.eq('userId', currentUser._id).eq('postId', post._id))
+            .first()
+        const postWithInfo = {
+            post,
+            author: {
+                _id: author?._id,
+                username: author?.username,
+                image: author?.image,
+                clerkId: author?.clerkId,
+            },
+            isLiked: !!like,
+            isBookmarked: !!bookmark
+        }
+
+        return postWithInfo
+    }
+})

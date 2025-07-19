@@ -28,6 +28,11 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: COLORS.surfaceLight,
     },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: COLORS.secondary,
+    },
     brand: {
         fontSize: 20,
         color: COLORS.primary,

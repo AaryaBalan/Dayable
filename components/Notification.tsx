@@ -14,7 +14,7 @@ export default Notification = ({ notification }) => (
         <View style={styles.notificationContent}>
 
             {/* sender avatar image */}
-            <Link href={'/(tabs)/notification'} asChild>
+            <Link href={`/user/${notification.sender._id} `} asChild>
                 <TouchableOpacity>
                     <Image
                         source={notification.sender.image}
@@ -28,7 +28,7 @@ export default Notification = ({ notification }) => (
                                 <Ionicons name='heart' size={14} color={COLORS.danger} />
                             ) : notification.type === 'comment' ? (
                                 <Ionicons name='chatbubble' size={14} color={COLORS.blue} />
-                            ) : <Ionicons name='person-add' size={14} color={COLORS.primary} />
+                            ) : <Ionicons name='person-add' size={14} color={COLORS.secondary} />
                         }
                     </View>
                 </TouchableOpacity>
@@ -36,7 +36,7 @@ export default Notification = ({ notification }) => (
 
             {/* notification text */}
             <View style={styles.notificationInfo}>
-                <Link href={'/notification'} asChild>
+                <Link href={`/user/${notification.sender._id}`} asChild>
                     <TouchableOpacity>
                         <Text style={styles.username}>{notification.sender.username}</Text>
                     </TouchableOpacity>
@@ -58,13 +58,17 @@ export default Notification = ({ notification }) => (
 
         {
             notification.post && (
-                <Image
-                    source={notification.post.image}
-                    style={styles.postImage}
-                    contentFit='cover'
-                    transition={200}
-                    cachePolicy='memory-disk'
-                />
+                <Link href={`/posts/${notification.post._id}`} asChild>
+                    <TouchableOpacity>
+                        <Image
+                            source={notification.post.image}
+                            style={styles.postImage}
+                            contentFit='cover'
+                            transition={200}
+                            cachePolicy='memory-disk'
+                        />
+                    </TouchableOpacity>
+                </Link>
             )
         }
     </View>

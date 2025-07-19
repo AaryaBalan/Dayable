@@ -13,14 +13,12 @@ import Loader from './Loader'
 type CommentsModalProps = {
     visible: boolean;
     onClose: () => void;
-    onCommentAdded: () => void;
     postId: string;
 };
 
 export default function CommentsModal({
     visible,
     onClose,
-    onCommentAdded,
     postId,
 }: CommentsModalProps) {
 
@@ -36,7 +34,6 @@ export default function CommentsModal({
                 postId: postId as Id<"posts">
             })
             setComment('')
-            onCommentAdded()
         } catch (error) {
             console.log('Error while adding comment', error)
         }
@@ -63,7 +60,7 @@ export default function CommentsModal({
                 </View>
 
                 {comments === undefined ?
-                    <Loader /> :
+                    <Loader text='Loading Comments...'/> :
                     <FlatList
                         data={comments}
                         renderItem={({ item }) => (

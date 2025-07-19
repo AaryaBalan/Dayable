@@ -6,7 +6,7 @@ import { styles } from '@/styles/bookmarks.style'
 import { Ionicons } from '@expo/vector-icons'
 import { useQuery } from 'convex/react'
 import { Image } from 'expo-image'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 import React from 'react'
 import { FlatList, TouchableOpacity, View } from 'react-native'
 
@@ -34,18 +34,19 @@ export default function Bookmark() {
                 }}
                 renderItem={({ item }) => (
                     item && item.post ? (
-                        <TouchableOpacity
-                            onPress={() => router.push(`/(tabs)`)}
-                            style={styles.bookmarkContainer}
-                        >
-                            <Image
-                                source={item.post.image}
-                                style={styles.bookmarkImage}
-                                contentFit='cover'
-                                transition={200}
-                                cachePolicy='memory-disk'
-                            />
-                        </TouchableOpacity>
+                        <Link href={`/posts/${item.post._id}`} asChild>
+                            <TouchableOpacity
+                                style={styles.bookmarkContainer}
+                            >
+                                <Image
+                                    source={item.post.image}
+                                    style={styles.bookmarkImage}
+                                    contentFit='cover'
+                                    transition={200}
+                                    cachePolicy='memory-disk'
+                                />
+                            </TouchableOpacity>
+                        </Link>
                     ) : null
                 )}
                 showsVerticalScrollIndicator={false}

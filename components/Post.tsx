@@ -29,10 +29,8 @@ export default function Post({ post }) {
     }
 
     const [isLiked, setIsLiked] = useState(post.isLiked)
-    const [likesCount, setLikesCount] = useState(post.likes)
     const [isHeartVisible, setIsHeartVisible] = useState(false)
     //comments
-    const [commentsCount, setCommentsCount] = useState(post.comments)
     const [showComment, setShowComment] = useState(false)
     //bookmark
     const [isBookmarked, setIdBookmarked] = useState(post.isBookmarked)
@@ -45,7 +43,6 @@ export default function Post({ post }) {
         try {
             const newLike = await toggleLike({ postId: post._id })
             setIsLiked(prev => !prev)
-            setLikesCount(prev => newLike ? prev + 1 : prev - 1)
         } catch (error) {
             console.log(error)
         }
@@ -76,9 +73,9 @@ export default function Post({ post }) {
     }
 
     const handleDelete = async () => {
-        try{
-            await deletePost({post: post._id})
-        }catch (error){
+        try {
+            await deletePost({ post: post._id })
+        } catch (error) {
             console.log('Error while deleting post', error)
         }
     }
@@ -87,7 +84,9 @@ export default function Post({ post }) {
         <View>
             {/* top bar */}
             <View style={styles.postTopBar}>
-                <Link href={'/(tabs)/profile'}>
+                <Link href={
+                    user.id === post.author.clerkId ? "/(tabs)/profile" : `/user/${post.author._id}`
+                } asChild>
                     <TouchableOpacity
                         style={{ flexDirection: 'row', alignItems: 'center', columnGap: 10 }}
                     >
@@ -159,7 +158,7 @@ export default function Post({ post }) {
             {/* post info */}
             <View style={styles.postInfo}>
                 <Text style={styles.likesText}>
-                    {likesCount > 0 ? `${likesCount} likes` : "Be the first to like"}
+                    {post.likes > 0 ? `${post.likes} likes` : "Be the first to like"}
                 </Text>
                 {post.caption && (
                     <View style={styles.captionContainer}>
@@ -180,7 +179,6 @@ export default function Post({ post }) {
                 postId={post._id}
                 visible={showComment}
                 onClose={() => setShowComment(false)}
-                onCommentAdded={() => setCommentsCount(prev => prev + 1)}
             />
 
         </View>

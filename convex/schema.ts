@@ -53,6 +53,7 @@ export default defineSchema({
     })
         .index("by_receiver", ["receiverId"])
         .index('by_post', ['postId'])
+        .index('by_both', ['senderId', 'receiverId', 'type'])
         .index('by_sender_and_post_and_type', ['senderId', 'postId', 'type']),
 
     bookmarks: defineTable({

@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1
     },
     topBarContent: {
-        color: COLORS.white,
+        color: COLORS.secondary,
         fontSize: 15,
     },
     createImage: {

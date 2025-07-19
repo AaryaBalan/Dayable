@@ -70,7 +70,7 @@ export default function Create() {
                 {/* top bar */}
                 <View style={styles.topBar}>
                     <TouchableOpacity onPress={() => router.back()}>
-                        <Ionicons name='arrow-back-outline' color={COLORS.white} size={20} />
+                        <Ionicons name='arrow-back-outline' color={COLORS.secondary} size={20} />
                     </TouchableOpacity>
                     <Text style={styles.topBarContent}>Create</Text>
                     <View style={{ width: 20 }}></View>
